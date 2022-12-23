@@ -8,6 +8,7 @@ import { getLogin, refreshTokenApi } from "@/api/user";
 import { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
+import { IamLoginResponseVO, postUnauthorizedLoginAccountPassword } from "@/api/unauthorized/login";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -29,12 +30,12 @@ export const useUserStore = defineStore({
     },
     /** 登入 */
     async loginByUsername(data) {
-      return new Promise<UserResult>((resolve, reject) => {
-        getLogin(data)
-          .then(data => {
-            if (data) {
-              setToken(data.data);
-              resolve(data);
+      return new Promise<IamLoginResponseVO>((resolve, reject) => {
+        postUnauthorizedLoginAccountPassword(data)
+          .then(rsp => {
+            if (rsp) {
+              // setToken(data.data);
+              resolve(rsp.data);
             }
           })
           .catch(error => {

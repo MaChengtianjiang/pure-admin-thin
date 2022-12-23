@@ -33,8 +33,8 @@ dataThemeChange();
 const { title } = useNav();
 
 const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
+  account: "lihao",
+  password: "OrNvLM8a5BpsUVpP"
 });
 
 const onLogin = async (formEl: FormInstance | undefined) => {
@@ -43,7 +43,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       useUserStoreHook()
-        .loginByUsername({ username: ruleForm.username, password: "admin123" })
+        .loginByUsername(ruleForm)
         .then(res => {
           if (res.success) {
             // 获取后端路由
@@ -115,11 +115,11 @@ onBeforeUnmount(() => {
                     trigger: 'blur'
                   }
                 ]"
-                prop="username"
+                prop="account"
               >
                 <el-input
                   clearable
-                  v-model="ruleForm.username"
+                  v-model="ruleForm.account"
                   placeholder="账号"
                   :prefix-icon="useRenderIcon(User)"
                 />

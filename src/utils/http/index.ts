@@ -5,18 +5,27 @@ import Axios, {
 } from "axios";
 import {
   PureHttpError,
-  RequestMethods,
+  PureHttpRequestConfig,
   PureHttpResponse,
-  PureHttpRequestConfig
+  RequestMethods
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken } from "@/utils/auth";
+import { formatToken, getToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+
+const mode = import.meta.env.MODE;
+
+const isDev = mode === "development";
+
+const baseApiPath = isDev
+  ? "http://36.1.51.17:31494"
+  : '"http://36.1.51.17:31494"';
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
+  baseURL: baseApiPath,
   timeout: 10000,
   headers: {
     Accept: "application/json, text/plain, */*",
