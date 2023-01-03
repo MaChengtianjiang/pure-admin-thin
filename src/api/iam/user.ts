@@ -21,7 +21,7 @@ export const getIamUserPageList = (page: PageRequest, searchParams?: any) => {
 
   return http.request<ApiPageResponse<IamUserModelVO>>(
     "get",
-    "/api/iam/user/page",
+    "/auth/api/iam/user/page",
     { params }
   );
 };

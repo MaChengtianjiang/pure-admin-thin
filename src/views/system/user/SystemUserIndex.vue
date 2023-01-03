@@ -5,7 +5,7 @@ import { onMounted, reactive, ref } from "vue";
 import { type FormInstance } from "element-plus";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { getIamUserPageList } from "@/api/iam/user";
-import { PageRequest } from "@/utils/http/types";
+import { PageRequest } from "@/utils/http/iamTypes";
 import { PureTableBar } from "@/components/RePureTableBar";
 
 defineOptions({
@@ -17,8 +17,8 @@ const form = reactive({
   iamUserMobile: "",
   state: ""
 });
-let dataList = ref([]);
-let loading = ref(true);
+const dataList = ref([]);
+const loading = ref(true);
 const { columns } = systemUserIndexColumns();
 
 const formRef = ref<FormInstance>();
@@ -52,7 +52,7 @@ function handleSelectionChange(val) {
 
 async function onSearch() {
   loading.value = true;
-  let { data } = await getIamUserPageList(pagination, form);
+  const { data } = await getIamUserPageList(pagination, form);
   dataList.value = data.records;
   pagination.total = data.total;
   loading.value = false;
@@ -102,7 +102,6 @@ onMounted(() => {
           </el-button>
         </el-form-item>
       </el-form>
-
 
       <PureTableBar
         title="用户管理"

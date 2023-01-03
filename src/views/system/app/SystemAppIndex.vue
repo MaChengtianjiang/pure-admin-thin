@@ -5,7 +5,7 @@ import { onMounted, reactive, ref } from "vue";
 import { type FormInstance } from "element-plus";
 import { PureTableBar } from "@/components/RePureTableBar";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { PageRequest } from "@/utils/http/types";
+import { PageRequest } from "@/utils/http/iamTypes";
 import { getIamAppPageList } from "@/api/iam/app";
 import SystemAppAddForm from "@/views/system/app/form/SystemAppAddForm.vue";
 import SystemAppEditForm from "@/views/system/app/form/SystemAppEditForm.vue";

@@ -121,9 +121,6 @@ router.beforeEach((to: toRouteType, _from, next) => {
 
   /** 如果已经登录并存在登录信息后不能跳转到路由白名单，而是继续保持在当前页面 */
   function toCorrectRoute() {
-    console.log("whiteList.includes(to.fullPath):", whiteList.includes(to.fullPath))
-    console.log("from.fullPath:", _from.fullPath)
-    console.log("to.fullPath:", to.fullPath)
     whiteList.includes(to.fullPath) ? next(_from.fullPath) : next();
   }
 
@@ -139,8 +136,6 @@ router.beforeEach((to: toRouteType, _from, next) => {
         openLink(to?.name as string);
         NProgress.done();
       } else {
-        console.log(4)
-        console.log("router:", router)
         toCorrectRoute();
       }
     } else {
@@ -149,7 +144,6 @@ router.beforeEach((to: toRouteType, _from, next) => {
         usePermissionStoreHook().wholeMenus.length === 0 &&
         to.path !== "/login"
       ) {
-        console.log("刷新");
         usePermissionStoreHook().cacheTenantList(userInfo.tenantList);
 
         initRouter().then((router: Router) => {
@@ -168,23 +162,19 @@ router.beforeEach((to: toRouteType, _from, next) => {
               });
             }
           }
-          console.log(2)
           router.push(to.fullPath);
         });
       }
-      console.log(5)
       toCorrectRoute();
     }
   } else {
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {
-        console.log("6");
         next();
       } else {
         next({ path: "/login" });
       }
     } else {
-      console.log("7");
       next();
     }
   }

@@ -45,10 +45,3 @@ export default class PureHttp {
     config?: PureHttpRequestConfig
   ): Promise<P>;
 }
-
-export declare type PageRequest = {
-  current: number,
-  size: number,
-  total: number,
-  str?: string
-}

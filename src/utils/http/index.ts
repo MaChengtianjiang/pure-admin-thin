@@ -13,6 +13,8 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
+import { message } from "@/utils/message";
+import router from "@/router";
 
 const mode = import.meta.env.MODE;
 
@@ -126,20 +128,25 @@ class PureHttp {
     instance.interceptors.response.use(
       (response: PureHttpResponse) => {
         const $config = response.config;
+
         // 关闭进度条动画
         NProgress.done();
         // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
         if (typeof $config.beforeResponseCallback === "function") {
           $config.beforeResponseCallback(response);
+
           return response.data;
         }
         if (PureHttp.initConfig.beforeResponseCallback) {
           PureHttp.initConfig.beforeResponseCallback(response);
           return response.data;
         }
-        return response.data;
+        return parseResponse(response.data);
+
+        // return response.data;
       },
       (error: PureHttpError) => {
+        console.log("error2");
         const $error = error;
         $error.isCancelRequest = Axios.isCancel($error);
         // 关闭进度条动画
@@ -194,6 +201,25 @@ class PureHttp {
   ): Promise<P> {
     return this.request<P>("get", url, params, config);
   }
+}
+
+/**
+ * 拦截报错
+ * @param res
+ */
+function parseResponse(res) {
+  switch (res.code) {
+    case 401:
+      message(res.message, { type: "error" });
+      break;
+    case 403:
+      message(res.message, { type: "error" });
+      router.replace({ path: "/login" });
+      break;
+    default:
+      break;
+  }
+  return res;
 }
 
 export const http = new PureHttp();
