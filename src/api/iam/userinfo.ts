@@ -50,12 +50,58 @@ type IamUserinfoApplicationVO = {
   roleList?: Array<IamUserinfoApplicationRoleVO>;
 };
 
+export type IamUserTenantInfo = {
+  /**
+   * 租户id
+   */
+  tenantId: string;
+
+  /**
+   * 租户名称
+   */
+  tenantName: string;
+
+  /**
+   * 租户编码
+   */
+  tenantCode: string;
+
+  /**
+   * 租户排序，从小到大
+   */
+  tenantSort: number;
+
+  /**
+   * 租户中用户的角色
+   */
+  tenantRole: Array<IamUserTenantRoleInfo>;
+};
+
+type IamUserTenantRoleInfo = {
+  /**
+   * 角色id
+   */
+  roleId: string;
+
+  /**
+   * 角色名称
+   */
+  roleName: string;
+
+  /**
+   * 角色编码
+   */
+  roleCode: string;
+
+  /**
+   * 角色具备的权限编码列表
+   */
+  permissionList: Array<string>;
+};
+
 export type IamUserinfoVO = {
   /* 用户id */
   id: string;
-
-  /* 用户名 */
-  username: string;
 
   /* 用户账户 */
   account: string;
@@ -66,18 +112,21 @@ export type IamUserinfoVO = {
   /* 用户备注 */
   remark: string;
 
-  /* 用户访问地址 */
+  /* 用户的头像 */
   avatar: string;
 
+  /* 租户id */
+  currentTenantId: string;
+
   /* 应用列表 */
-  applicationList?: Array<IamUserinfoApplicationVO>;
+  tenantList?: Array<IamUserTenantInfo>;
 };
 
 /* 获取当前登录的用户信息 */
 export const getIamUserinfoCurrent = () => {
   return http.request<ApiResponse<IamUserinfoVO>>(
     "get",
-    "/api/iam/userinfo/current"
+    "/auth/api/iam/userinfo/current"
   );
 };
 
@@ -85,7 +134,7 @@ export const getIamUserinfoCurrent = () => {
 export const getIamUserinfoRefresh = () => {
   return http.request<ApiResponse<IamUserinfoApplicationVO>>(
     "get",
-    "/api/iam/userinfo/refresh"
+    "/auth/api/iam/userinfo/refresh"
   );
 };
 
@@ -93,17 +142,6 @@ export const getIamUserinfoRefresh = () => {
 export const getIamUserinfoRouterPlatform = () => {
   return http.request<ApiResponse<Array<RouteRecordRaw>>>(
     "get",
-    "/api/iam/userinfo/router/platform"
-  );
-};
-
-/* 获取当前登录用户路由 */
-export const getIamUserinfoRouterApplication = (appId: string) => {
-  return http.request<ApiResponse<Array<RouteRecordRaw>>>(
-    "get",
-    "/api/iam/userinfo/router/application",
-    {
-      params: { appId: appId }
-    }
+    "/auth/api/iam/userinfo/router/platform"
   );
 };

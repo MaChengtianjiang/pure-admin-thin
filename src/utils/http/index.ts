@@ -11,16 +11,14 @@ import {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { formatToken, getToken } from "@/utils/auth";
+import { getToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
 
 const mode = import.meta.env.MODE;
 
 const isDev = mode === "development";
 
-const baseApiPath = isDev
-  ? "http://36.1.51.17:31494"
-  : '"http://36.1.51.17:31494"';
+const baseApiPath = isDev ? "/api" : '"http://36.1.51.17:31494"';
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -60,7 +58,7 @@ class PureHttp {
   private static retryOriginalRequest(config: PureHttpRequestConfig) {
     return new Promise(resolve => {
       PureHttp.requests.push((token: string) => {
-        config.headers["Authorization"] = formatToken(token);
+        config.headers["Authorization"] = token;
         resolve(config);
       });
     });
@@ -89,28 +87,26 @@ class PureHttp {
               const data = getToken();
               if (data) {
                 const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
+                const expired = parseInt(data.expireTimestamp) - now <= 0;
                 if (expired) {
                   if (!PureHttp.isRefreshing) {
                     PureHttp.isRefreshing = true;
                     // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
+                    // useUserStoreHook()
+                    //   .handRefreshToken()
+                    //   .then(res => {
+                    //     const token = res.data.accessToken;
+                    //     config.headers["Authorization"] = token;
+                    //     PureHttp.requests.forEach(cb => cb(token));
+                    //     PureHttp.requests = [];
+                    //   })
+                    //   .finally(() => {
+                    PureHttp.isRefreshing = false;
+                    //   });
                   }
                   resolve(PureHttp.retryOriginalRequest(config));
                 } else {
-                  config.headers["Authorization"] = formatToken(
-                    data.accessToken
-                  );
+                  config.headers["Authorization"] = data.token;
                   resolve(config);
                 }
               } else {

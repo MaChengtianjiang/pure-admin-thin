@@ -1,4 +1,5 @@
 import { RouteRecordName } from "vue-router";
+import { IamUserTenantInfo } from "@/api/iam/userinfo";
 
 export type cacheType = {
   mode: string;

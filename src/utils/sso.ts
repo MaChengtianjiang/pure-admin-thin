@@ -1,5 +1,6 @@
-import { removeToken, setToken, type DataInfo } from "./auth";
-import { subBefore, getQueryMap } from "@pureadmin/utils";
+import { removeToken, setToken } from "./auth";
+import { getQueryMap, subBefore } from "@pureadmin/utils";
+import { IamLoginResponseVO } from "@/api/unauthorized/login";
 
 /**
  * 简版前端单点登录，根据实际业务自行编写
@@ -12,7 +13,7 @@ import { subBefore, getQueryMap } from "@pureadmin/utils";
  */
 (function () {
   // 获取 url 中的参数
-  const params = getQueryMap(location.href) as DataInfo<Date>;
+  const params = getQueryMap(location.href) as IamLoginResponseVO;
   const must = ["username", "roles", "accessToken"];
   const mustLength = must.length;
   if (Object.keys(params).length !== mustLength) return;

@@ -27,8 +27,14 @@ const __APP_INFO__ = {
 };
 
 export default ({ command, mode }: ConfigEnv): UserConfigExport => {
-  const { VITE_CDN, VITE_PORT, VITE_COMPRESSION, VITE_PUBLIC_PATH } =
-    warpperEnv(loadEnv(mode, root));
+  const {
+    VITE_CDN,
+    VITE_PORT,
+    VITE_COMPRESSION,
+    VITE_PUBLIC_PATH,
+    VITE_PROXY_DOMAIN,
+    VITE_PROXY_DOMAIN_REAL
+  } = warpperEnv(loadEnv(mode, root));
   return {
     base: VITE_PUBLIC_PATH,
     root,
@@ -43,7 +49,17 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       port: VITE_PORT,
       host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
-      proxy: {},
+      proxy:
+        VITE_PROXY_DOMAIN_REAL.length > 0
+          ? {
+              [VITE_PROXY_DOMAIN]: {
+                target: VITE_PROXY_DOMAIN_REAL,
+                // ws: true,
+                changeOrigin: true,
+                rewrite: (path: string) => regExps(path, VITE_PROXY_DOMAIN)
+              }
+            }
+          : null,
       open: true
     },
     plugins: getPluginsList(command, VITE_CDN, VITE_COMPRESSION),
@@ -73,4 +89,9 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       __APP_INFO__: JSON.stringify(__APP_INFO__)
     }
   };
+};
+
+// 跨域代理重写
+const regExps = (value: string, reg: string): string => {
+  return value.replace(new RegExp(`^${reg}`, "g"), "");
 };

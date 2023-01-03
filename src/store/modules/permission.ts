@@ -3,6 +3,7 @@ import { store } from "@/store";
 import { cacheType } from "./types";
 import { constantMenus } from "@/router";
 import { ascending, filterTree, filterNoPermissionTree } from "@/router/utils";
+import { IamUserTenantInfo } from "@/api/iam/userinfo";
 
 export const usePermissionStore = defineStore({
   id: "pure-permission",
@@ -12,7 +13,9 @@ export const usePermissionStore = defineStore({
     // 整体路由生成的菜单（静态、动态）
     wholeMenus: [],
     // 缓存页面keepAlive
-    cachePageList: []
+    cachePageList: [],
+    // 缓存租户
+    tenantList: []
   }),
   actions: {
     /** 组装整体路由生成的菜单 */
@@ -38,6 +41,11 @@ export const usePermissionStore = defineStore({
     clearAllCachePage() {
       this.wholeMenus = [];
       this.cachePageList = [];
+    },
+
+    /** 缓存租户 */
+    cacheTenantList(tenantList: Array<IamUserTenantInfo>) {
+      this.tenantList = tenantList;
     }
   }
 });

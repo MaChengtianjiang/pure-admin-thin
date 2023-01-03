@@ -68,22 +68,22 @@ export type IamRouterModelVO = {
  * 路由基础信息
  */
 export type IamRouteVO = {
-  /* 用户id */
+  /* 路由地址 */
   path: string;
 
-  /* 用户名 */
+  /* 路由名字 */
   name: string;
 
-  /* 用户账户 */
+  /* 路由重定向 */
   redirect: string;
 
-  /* 用户联系方式 */
+  /* 按需加载组件 */
   component: string;
 
-  /* 用户备注 */
+  /* 路由信息 */
   meta: IamRouterMateVO;
 
-  /* 应用列表 */
+  /* 子路由 */
   children?: Array<IamRouteVO>;
 };
 

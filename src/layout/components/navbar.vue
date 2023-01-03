@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import Search from "./search/index.vue";
 import Notice from "./notice/index.vue";
-import mixNav from "./sidebar/mixNav.vue";
+// import mixNav from "./sidebar/mixNav.vue";
 import { useNav } from "@/layout/hooks/useNav";
 import Breadcrumb from "./sidebar/breadCrumb.vue";
 import topCollapse from "./sidebar/topCollapse.vue";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import IMixNav from "@/layout/components/IHeader/IMixNav.vue";
 
 const {
   layout,
@@ -37,6 +38,7 @@ const {
     />
 
     <mixNav v-if="layout === 'mix'" />
+    <i-mix-nav v-if="layout === 'mix'" />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">
       <!-- 菜单搜索 -->
