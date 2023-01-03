@@ -131,10 +131,11 @@ export const getIamUserinfoCurrent = () => {
 };
 
 /* 手动刷新当前登录用户信息 */
-export const getIamUserinfoRefresh = () => {
+export const getIamUserinfoRefresh = params => {
   return http.request<ApiResponse<IamUserinfoApplicationVO>>(
     "get",
-    "/auth/api/iam/userinfo/refresh"
+    "/auth/api/iam/userinfo/refresh",
+    { params }
   );
 };
 

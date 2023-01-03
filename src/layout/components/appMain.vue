@@ -40,22 +40,26 @@ const getSectionStyle = computed(() => {
 
 const transitionMain = defineComponent({
   render() {
+    const name =
+      transitions.value(this.route) &&
+      this.route.meta.transition.enterTransition
+        ? "pure-classes-transition"
+        : (transitions.value(this.route) && this.route.meta.transition.name) ||
+          "fade-transform";
+
+    const enterActiveClass =
+      transitions.value(this.route) &&
+      `animate__animated ${this.route.meta.transition.enterTransition}`;
+
+    const leaveActiveClass =
+      transitions.value(this.route) &&
+      `animate__animated ${this.route.meta.transition.leaveTransition}`;
     return h(
       Transition,
       {
-        name:
-          transitions.value(this.route) &&
-          this.route.meta.transition.enterTransition
-            ? "pure-classes-transition"
-            : (transitions.value(this.route) &&
-                this.route.meta.transition.name) ||
-              "fade-transform",
-        enterActiveClass:
-          transitions.value(this.route) &&
-          `animate__animated ${this.route.meta.transition.enterTransition}`,
-        leaveActiveClass:
-          transitions.value(this.route) &&
-          `animate__animated ${this.route.meta.transition.leaveTransition}`,
+        name: name,
+        enterActiveClass: enterActiveClass,
+        leaveActiveClass: leaveActiveClass,
         mode: "out-in",
         appear: true
       },

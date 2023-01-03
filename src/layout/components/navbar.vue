@@ -37,7 +37,7 @@ const {
       class="breadcrumb-container"
     />
 
-    <mixNav v-if="layout === 'mix'" />
+<!--    <mixNav v-if="layout === 'mix'" />-->
     <i-mix-nav v-if="layout === 'mix'" />
 
     <div v-if="layout === 'vertical'" class="vertical-header-right">

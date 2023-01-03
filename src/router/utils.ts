@@ -16,9 +16,9 @@ import {
   isAllEmpty,
   isIncludeAllChildren,
   isString,
-  storageSession
+  // storageSession
 } from "@pureadmin/utils";
-import { getConfig } from "@/config";
+// import { getConfig } from "@/config";
 import { buildHierarchyTree } from "@/utils/tree";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 // 动态路由
@@ -53,8 +53,6 @@ function ascending(arr: any[]) {
 
 /** 过滤meta中showLink为false的菜单 */
 function filterTree(data: RouteComponent[]) {
-  console.log("cloneDeep(data):", cloneDeep(data));
-
   const newTree = cloneDeep(data).filter(
     (v: { meta: { showLink: boolean } }) => v.meta?.showLink !== false
   );
@@ -62,8 +60,6 @@ function filterTree(data: RouteComponent[]) {
   // newTree.forEach(
   //   (v: { children }) => v.children && (v.children = filterTree(v.children))
   // );
-
-  console.log("newTree:", newTree);
 
   return newTree;
 }

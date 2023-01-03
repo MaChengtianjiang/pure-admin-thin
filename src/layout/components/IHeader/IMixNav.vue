@@ -13,20 +13,14 @@ const menuRef = ref();
 
 const {
   device,
-  routers,
   logout,
   onPanel,
-  menuSelect,
-  resolvePath,
+  tenantSelect,
   username,
   avatarsStyle
 } = useNav();
 
-onMounted(() => {
-
-  console.log("usePermissionStoreHook().tenantList:" , usePermissionStoreHook().tenantList)
-
-});
+onMounted(() => {});
 
 nextTick(() => {
   menuRef.value?.handleResize();
@@ -43,22 +37,14 @@ nextTick(() => {
       ref="menuRef"
       mode="horizontal"
       class="horizontal-header-menu"
-      @select="indexPath => menuSelect(indexPath, routers)"
+      @select="indexPath => tenantSelect(indexPath)"
     >
       <el-menu-item
         v-for="tenant in usePermissionStoreHook().tenantList"
         :key="tenant.tenantId"
-        :index="tenant.tenantName"
+        :index="tenant.tenantId"
       >
         <template #title>
-<!--          <div-->
-<!--            v-if="toRaw(tenant.meta.icon)"-->
-<!--            :class="['sub-menu-icon', tenant.meta.icon]"-->
-<!--          >-->
-<!--            <component-->
-<!--              :is="useRenderIcon(tenant.meta && toRaw(tenant.meta.icon))"-->
-<!--            />-->
-<!--          </div>-->
           <span class="select-none">{{ tenant.tenantName }}</span>
         </template>
       </el-menu-item>

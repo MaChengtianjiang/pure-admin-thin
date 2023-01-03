@@ -9,6 +9,8 @@ import { router, remainingPaths } from "@/router";
 import { useAppStoreHook } from "@/store/modules/app";
 import { useUserStoreHook } from "@/store/modules/user";
 import { usePermissionStoreHook } from "@/store/modules/permission";
+import { getIamUserinfoRefresh } from "@/api/iam/userinfo";
+import { initRouter } from "@/router/utils";
 
 const errorInfo = "当前路由配置不正确，请检查配置";
 
@@ -120,6 +122,15 @@ export function useNav() {
     return remainingPaths.includes(path);
   }
 
+  function tenantSelect(tenantId: string): void {
+    getIamUserinfoRefresh({ tenantId: tenantId }).then(r => {
+      // usePermissionStoreHook().cacheTenantList([]);
+      initRouter().then(r => {
+        // TODO 跳转至新应用的首页
+      });
+    });
+  }
+
   return {
     route,
     title,
@@ -139,6 +150,7 @@ export function useNav() {
     pureApp,
     username,
     avatarsStyle,
-    tooltipEffect
+    tooltipEffect,
+    tenantSelect
   };
 }

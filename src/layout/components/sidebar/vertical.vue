@@ -23,7 +23,7 @@ const subMenuData = ref([]);
 
 const menuData = computed(() => {
   // console.log("subMenuData:", subMenuData);
-  console.log("wholeMenus:", usePermissionStoreHook().wholeMenus);
+  // console.log("wholeMenus:", usePermissionStoreHook().wholeMenus);
   //
   // return pureApp.layout === "mix" && device.value !== "mobile"
   //   ? subMenuData.value
