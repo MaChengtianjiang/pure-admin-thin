@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import tree from "./tree.vue";
-import { systemUserIndexColumns } from "./system_user_index_columns";
+import { systemUserIndexColumns } from "./SystemUserIndexColumns";
 import { onMounted, reactive, ref } from "vue";
 import { type FormInstance } from "element-plus";
 import { useRenderIcon } from "@/components/ReIcon/src/hooks";
@@ -117,7 +117,7 @@ onMounted(() => {
         <template v-slot="{ size, checkList }">
           <pure-table
             border
-            align="center"
+            align-whole="center"
             table-layout="auto"
             :size="size"
             :data="dataList"

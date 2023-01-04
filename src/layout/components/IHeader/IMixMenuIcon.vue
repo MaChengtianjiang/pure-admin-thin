@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRenderIcon } from "/@/components/ReIcon/src/hooks";
+import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { PropType, toRaw } from "vue";
 
 defineOptions({

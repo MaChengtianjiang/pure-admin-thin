@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // import tree from "./tree.vue";
-import { systemAppIndexColumns } from "./system_app_index_columns";
+import { systemAppIndexColumns } from "./SystemAppIndexColumns";
 import { onMounted, reactive, ref } from "vue";
 import { type FormInstance } from "element-plus";
 import { PureTableBar } from "@/components/RePureTableBar";
@@ -132,7 +132,8 @@ onMounted(() => {
         <template v-slot="{ size, checkList }">
           <pure-table
             border
-            align="center"
+            align-whole="center"
+            row-key="id"
             table-layout="auto"
             :loading="loading"
             :size="size"

@@ -15,7 +15,7 @@ import {
   intersection,
   isAllEmpty,
   isIncludeAllChildren,
-  isString,
+  isString
   // storageSession
 } from "@pureadmin/utils";
 // import { getConfig } from "@/config";
@@ -23,16 +23,17 @@ import { buildHierarchyTree } from "@/utils/tree";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 // 动态路由
 import { getIamUserinfoRouterPlatform } from "@/api/iam/userinfo";
+import { message } from "@/utils/message";
 
 const IFrame = () => import("@/layout/frameView.vue");
 // https://cn.vitejs.dev/guide/features.html#glob-import
 const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
 
 function handRank(routeInfo: any) {
-  const { name, path, parentId, meta } = routeInfo;
+  const {name, path, parentId, meta} = routeInfo;
   return isAllEmpty(parentId)
     ? isAllEmpty(meta?.rank) ||
-      (meta?.rank === 0 && name !== "Home" && path !== "/")
+    (meta?.rank === 0 && name !== "Home" && path !== "/")
       ? true
       : false
     : false;
@@ -197,10 +198,39 @@ function handleAsyncRoutes(routeList) {
 }
 
 /** 初始化路由（`new Promise` 写法防止在异步请求中造成无限循环）*/
-function initRouter() {
+function initRouter(selectApplicationName?: string) {
+  console.log("初始化路由");
   return new Promise(resolve => {
-    getIamUserinfoRouterPlatform().then(({ data }) => {
-      handleAsyncRoutes(cloneDeep(data));
+    getIamUserinfoRouterPlatform().then(({data}) => {
+      console.log(data);
+
+      // 获取所有应用路由
+      const asyncAppRouters = cloneDeep(data);
+      usePermissionStoreHook().cacheApplicationList(asyncAppRouters);
+
+      if (asyncAppRouters.length < 1) {
+        message("当前用户无任何应用权限", {type: "error"});
+        resolve(router);
+        return;
+      }
+
+      // 从缓存里获取路由
+      let curApplication = usePermissionStoreHook().curApplication;
+
+      // 选择
+      if (selectApplicationName) {
+        curApplication = asyncAppRouters.find(x => x.name === applicationName);
+      } else {
+        if (!curApplication) {
+          curApplication = asyncAppRouters[0];
+        }
+      }
+
+      usePermissionStoreHook().selectApplicationList(curApplication);
+
+      // 切换路由
+      handleAsyncRoutes(curApplication.children);
+      console.log("初始化路由完成:", router);
       resolve(router);
     });
   });
@@ -244,7 +274,7 @@ function formatTwoStageRoutes(routesList: RouteRecordRaw[]) {
         children: []
       });
     } else {
-      newRoutesList[0]?.children.push({ ...v });
+      newRoutesList[0]?.children.push({...v});
     }
   });
   return newRoutesList;
@@ -255,7 +285,7 @@ function handleAliveRoute(matched: RouteRecordNormalized[], mode?: string) {
   switch (mode) {
     case "add":
       matched.forEach(v => {
-        usePermissionStoreHook().cacheOperate({ mode: "add", name: v.name });
+        usePermissionStoreHook().cacheOperate({mode: "add", name: v.name});
       });
       break;
     case "delete":
@@ -271,7 +301,7 @@ function handleAliveRoute(matched: RouteRecordNormalized[], mode?: string) {
       });
       useTimeoutFn(() => {
         matched.forEach(v => {
-          usePermissionStoreHook().cacheOperate({ mode: "add", name: v.name });
+          usePermissionStoreHook().cacheOperate({mode: "add", name: v.name});
         });
       }, 100);
   }

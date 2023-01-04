@@ -1,9 +1,9 @@
 <script setup lang="ts">
 // 简化顶部menu
 
-import { usePermissionStoreHook } from "/@/store/modules/permission";
-import { useNav } from "/@/layout/hooks/useNav";
-import IMixMenuIcon from "/@/components/IHeader/IMixMenuIcon.vue";
+import { usePermissionStoreHook } from "@/store/modules/permission";
+import { useNav } from "@/layout/hooks/useNav";
+import IMixMenuIcon from "@/layout/components/IHeader/IMixMenuIcon.vue";
 
 const { resolvePath } = useNav();
 
@@ -14,7 +14,7 @@ defineOptions({
 
 <template>
   <template
-    v-for="route in usePermissionStoreHook().headerMenus"
+    v-for="route in usePermissionStoreHook().applicationList"
     :key="route.path"
   >
     <component

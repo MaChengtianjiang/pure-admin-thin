@@ -209,17 +209,19 @@ class PureHttp {
  */
 function parseResponse(res) {
   switch (res.code) {
-    case 401:
-      message(res.message, { type: "error" });
-      break;
     case 403:
       message(res.message, { type: "error" });
-      router.replace({ path: "/login" });
+      useUserStoreHook().logOut();
+      return Promise.reject(new Error());
+      break;
+    case 200:
+      return Promise.resolve(res);
       break;
     default:
+      message(res.message, { type: "error" });
+      return Promise.reject(new Error());
       break;
   }
-  return res;
 }
 
 export const http = new PureHttp();

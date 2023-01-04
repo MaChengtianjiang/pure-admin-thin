@@ -122,12 +122,26 @@ export function useNav() {
     return remainingPaths.includes(path);
   }
 
+  /**
+   * 切换租户
+   * @param tenantId
+   */
   function tenantSelect(tenantId: string): void {
     getIamUserinfoRefresh({ tenantId: tenantId }).then(r => {
       // usePermissionStoreHook().cacheTenantList([]);
       initRouter().then(r => {
         // TODO 跳转至新应用的首页
       });
+    });
+  }
+
+  /**
+   * 切换应用
+   * @param applicationName
+   */
+  function applicationSelect(applicationName: string): void {
+    initRouter(applicationName).then(r => {
+      // TODO 跳转至新应用的首页
     });
   }
 
@@ -151,6 +165,7 @@ export function useNav() {
     username,
     avatarsStyle,
     tooltipEffect,
-    tenantSelect
+    tenantSelect,
+    applicationSelect
   };
 }

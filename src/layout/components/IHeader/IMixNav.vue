@@ -7,18 +7,13 @@ import { useRenderIcon } from "@/components/ReIcon/src/hooks";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import LogoutCircleRLine from "@iconify-icons/ri/logout-circle-r-line";
 import Setting from "@iconify-icons/ri/settings-3-line";
+import IMixHeaderMenu from "@/layout/components/IHeader/IMixHeaderMenu.vue";
 
 const menuRef = ref();
 // const defaultActive = ref(null);
 
-const {
-  device,
-  logout,
-  onPanel,
-  tenantSelect,
-  username,
-  avatarsStyle
-} = useNav();
+const { device, logout, onPanel, applicationSelect, username, avatarsStyle } =
+  useNav();
 
 onMounted(() => {});
 
@@ -31,21 +26,22 @@ nextTick(() => {
   <div
     v-if="device !== 'mobile'"
     class="horizontal-header"
-    v-loading="usePermissionStoreHook().tenantList.length === 0"
+    v-loading="usePermissionStoreHook().applicationList.length === 0"
   >
+<!--    <i-mix-header-menu />-->
     <el-menu
       ref="menuRef"
       mode="horizontal"
       class="horizontal-header-menu"
-      @select="indexPath => tenantSelect(indexPath)"
+      @select="applicationName => applicationSelect(applicationName)"
     >
       <el-menu-item
-        v-for="tenant in usePermissionStoreHook().tenantList"
-        :key="tenant.tenantId"
-        :index="tenant.tenantId"
+        v-for="app in usePermissionStoreHook().applicationList"
+        :key="app.name"
+        :index="app.name"
       >
         <template #title>
-          <span class="select-none">{{ tenant.tenantName }}</span>
+          <span class="select-none">{{ app.meta.title }}</span>
         </template>
       </el-menu-item>
     </el-menu>

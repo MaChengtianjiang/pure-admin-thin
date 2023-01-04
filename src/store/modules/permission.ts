@@ -4,6 +4,7 @@ import { cacheType } from "./types";
 import { constantMenus } from "@/router";
 import { ascending, filterTree, filterNoPermissionTree } from "@/router/utils";
 import { IamUserTenantInfo } from "@/api/iam/userinfo";
+import { IamRouterModelVO } from "@/api/iam/router";
 
 export const usePermissionStore = defineStore({
   id: "pure-permission",
@@ -15,7 +16,11 @@ export const usePermissionStore = defineStore({
     // 缓存页面keepAlive
     cachePageList: [],
     // 缓存租户
-    tenantList: []
+    tenantList: [],
+    // 缓存上次使用应用
+    curApplication: undefined,
+    // 缓存所有能使用应用
+    applicationList: []
   }),
   actions: {
     /** 组装整体路由生成的菜单 */
@@ -46,6 +51,20 @@ export const usePermissionStore = defineStore({
     /** 缓存租户 */
     cacheTenantList(tenantList: Array<IamUserTenantInfo>) {
       this.tenantList = tenantList;
+    },
+
+    /**
+     * 缓存应用
+     */
+    cacheApplicationList(applicationList: Array<IamRouterModelVO>) {
+      this.applicationList = applicationList;
+    },
+
+    /**
+     * 选择应用
+     */
+    selectApplicationList(application) {
+      this.curApplication = application;
     }
   }
 });
